@@ -2,6 +2,7 @@
 	"name": "obsidian-timeflow",
 	"version": "1.0.0",
 	"description": "Infinite vertical temporal feed for Periodic Notes",
+	"author": "smirnoffmg",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {
@@ -29,7 +30,7 @@
 		"jiti": "2.6.1"
 	},
 	"dependencies": {
-		"obsidian": "latest",
+		"obsidian": "1.8.7",
 		"obsidian-daily-notes-interface": "^0.9.4"
 	}
 }

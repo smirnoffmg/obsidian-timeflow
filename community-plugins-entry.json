@@ -1,0 +1,7 @@
+{
+	"id": "timeflow",
+	"name": "Timeflow",
+	"author": "smirnoffmg",
+	"description": "Infinite vertical temporal feed for Periodic Notes (daily, weekly, monthly).",
+	"repo": "https://github.com/smirnoffmg/obsidian-timeflow"
+}
