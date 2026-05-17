@@ -19,9 +19,11 @@ export class FixedClock implements IClock {
 export class FakePeriodicNoteRepository implements IPeriodicNoteRepository {
 	private dailyNotes = new Map<DayId, NoteRef>();
 	private weeklyNotes = new Map<DayId, NoteRef>();
+	private monthlyNotes = new Map<DayId, NoteRef>();
 	private listeners = new Set<() => void>();
 	configured = true;
 	weeklyEnabled = false;
+	monthlyEnabled = false;
 
 	isConfigured(): boolean {
 		return this.configured;
@@ -31,12 +33,20 @@ export class FakePeriodicNoteRepository implements IPeriodicNoteRepository {
 		return this.weeklyEnabled;
 	}
 
+	isMonthlyNotesEnabled(): boolean {
+		return this.monthlyEnabled;
+	}
+
 	setDailyNote(day: DayId, path: string): void {
 		this.dailyNotes.set(day, { path });
 	}
 
 	setWeeklyNote(weekStart: DayId, path: string): void {
 		this.weeklyNotes.set(weekStart, { path });
+	}
+
+	setMonthlyNote(monthStart: DayId, path: string): void {
+		this.monthlyNotes.set(monthStart, { path });
 	}
 
 	refresh(): void {}
@@ -49,6 +59,10 @@ export class FakePeriodicNoteRepository implements IPeriodicNoteRepository {
 		return this.weeklyNotes.get(weekStart);
 	}
 
+	getNoteForMonth(monthStart: DayId): NoteRef | undefined {
+		return this.monthlyNotes.get(monthStart);
+	}
+
 	async createNoteForDay(date: DayId): Promise<NoteRef> {
 		const ref = { path: `daily/${date}.md` };
 		this.dailyNotes.set(date, ref);
@@ -58,6 +72,12 @@ export class FakePeriodicNoteRepository implements IPeriodicNoteRepository {
 	async createNoteForWeek(weekStart: DayId): Promise<NoteRef> {
 		const ref = { path: `weekly/${weekStart}.md` };
 		this.weeklyNotes.set(weekStart, ref);
+		return ref;
+	}
+
+	async createNoteForMonth(monthStart: DayId): Promise<NoteRef> {
+		const ref = { path: `monthly/${monthStart}.md` };
+		this.monthlyNotes.set(monthStart, ref);
 		return ref;
 	}
 

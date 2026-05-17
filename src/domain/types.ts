@@ -4,7 +4,7 @@ export interface NoteRef {
 	path: string;
 }
 
-export type PeriodKind = "day" | "week" | "week-marker" | "month-marker";
+export type PeriodKind = "day" | "week" | "month" | "week-marker" | "month-marker";
 
 export interface PeriodItem {
 	kind: PeriodKind;
@@ -30,4 +30,8 @@ export interface NoteLookup {
 
 export interface WeekNoteLookup {
 	(weekStart: DayId): NoteRef | undefined;
+}
+
+export interface MonthNoteLookup {
+	(monthStart: DayId): NoteRef | undefined;
 }

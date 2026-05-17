@@ -1,5 +1,6 @@
 import type { PeriodItem } from "../domain/types";
-import { formatPeriodHeading, isCurrentPeriod } from "./period-format";
+import { isCurrentPeriod } from "./period-format";
+import { applyPeriodKindClass, buildPeriodHeader } from "./period-header";
 
 export function renderPlaceholderCard(
 	item: PeriodItem,
@@ -11,17 +12,13 @@ export function renderPlaceholderCard(
 ): HTMLElement {
 	const card = document.createElement("div");
 	card.className = "timeflow-placeholder";
-	if (item.kind === "week") {
-		card.classList.add("timeflow-placeholder--week");
-	}
+	applyPeriodKindClass(card, "timeflow-placeholder", item);
 	if (isCurrentPeriod(item, options.today, options.weekStartsOn)) {
-		card.classList.add("timeflow-placeholder--today");
+		card.classList.add("timeflow-placeholder--current");
 	}
 	card.dataset.id = item.id;
 
-	const dateEl = document.createElement("div");
-	dateEl.className = "timeflow-placeholder__date";
-	dateEl.textContent = formatPeriodHeading(item);
+	card.appendChild(buildPeriodHeader(item));
 
 	const messageEl = document.createElement("div");
 	messageEl.className = "timeflow-placeholder__message";
@@ -36,7 +33,6 @@ export function renderPlaceholderCard(
 		options.onCreate(item);
 	});
 
-	card.appendChild(dateEl);
 	card.appendChild(messageEl);
 	card.appendChild(button);
 

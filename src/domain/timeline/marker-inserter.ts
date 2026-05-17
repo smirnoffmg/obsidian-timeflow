@@ -1,5 +1,11 @@
 import { startOfMonth, startOfWeek } from "../dates";
-import type { DayId, MarkerOptions, PeriodItem, WeekNoteLookup } from "../types";
+import type {
+	DayId,
+	MarkerOptions,
+	MonthNoteLookup,
+	PeriodItem,
+	WeekNoteLookup,
+} from "../types";
 
 export function weekMarkerId(weekStart: DayId): string {
 	return `week-marker-${weekStart}`;
@@ -13,9 +19,15 @@ export function monthMarkerId(monthStart: DayId): string {
 	return `month-marker-${monthStart}`;
 }
 
+export function monthPeriodId(monthStart: DayId): string {
+	return `month-${monthStart}`;
+}
+
 export interface StreamInsertOptions extends MarkerOptions {
 	weeklyNotesEnabled: boolean;
 	weekLookup: WeekNoteLookup;
+	monthlyNotesEnabled: boolean;
+	monthLookup: MonthNoteLookup;
 }
 
 export function insertMarkers(
@@ -35,11 +47,21 @@ export function insertMarkers(
 		if (options.showMonthMarkers) {
 			const monthStart = startOfMonth(day.date);
 			if (monthStart !== lastMonthStart) {
-				result.push({
-					kind: "month-marker",
-					date: monthStart,
-					id: monthMarkerId(monthStart),
-				});
+				if (options.monthlyNotesEnabled) {
+					const note = options.monthLookup(monthStart);
+					result.push({
+						kind: "month",
+						date: monthStart,
+						note,
+						id: monthPeriodId(monthStart),
+					});
+				} else {
+					result.push({
+						kind: "month-marker",
+						date: monthStart,
+						id: monthMarkerId(monthStart),
+					});
+				}
 				lastMonthStart = monthStart;
 			}
 		}

@@ -34,6 +34,79 @@
 	letter-spacing: 0.04em;
 }
 
+/* Shared period header (cards + placeholders) */
+.timeflow-period__header {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	margin-bottom: 0.35rem;
+}
+
+.timeflow-period__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 1.25rem;
+	height: 1.25rem;
+	color: var(--text-muted);
+}
+
+.timeflow-period__icon svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+.timeflow-period__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.35rem;
+	min-width: 0;
+	line-height: 1.35;
+}
+
+.timeflow-period__period {
+	font-size: var(--font-ui-smaller);
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	flex-shrink: 0;
+}
+
+.timeflow-period__sep {
+	color: var(--text-faint);
+	font-size: var(--font-ui-small);
+	flex-shrink: 0;
+}
+
+.timeflow-period__heading {
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+}
+
+.timeflow-card--week .timeflow-period__period,
+.timeflow-card--week .timeflow-period__icon {
+	color: var(--interactive-accent);
+}
+
+.timeflow-card--month .timeflow-period__period,
+.timeflow-card--month .timeflow-period__icon {
+	color: var(--text-accent);
+}
+
+.timeflow-placeholder--week .timeflow-period__period,
+.timeflow-placeholder--week .timeflow-period__icon {
+	color: var(--interactive-accent);
+}
+
+.timeflow-placeholder--month .timeflow-period__period,
+.timeflow-placeholder--month .timeflow-period__icon {
+	color: var(--text-accent);
+}
+
+/* Note cards */
 .timeflow-card {
 	padding: 0.75rem 1rem;
 	border-radius: var(--radius-m);
@@ -47,24 +120,29 @@
 	border-color: var(--interactive-accent);
 }
 
-.timeflow-card--today {
+.timeflow-card--current {
 	border-color: var(--interactive-accent);
 	box-shadow: 0 0 0 1px var(--interactive-accent);
 }
 
 .timeflow-card--week {
+	padding: 0.85rem 1rem;
 	border-left: 3px solid var(--interactive-accent);
 }
 
-.timeflow-card__date {
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-	margin-bottom: 0.25rem;
+.timeflow-card--month {
+	padding: 1rem 1rem;
+	border-left: 4px solid var(--text-accent);
+	background: var(--background-secondary-alt, var(--background-secondary));
 }
 
 .timeflow-card__title {
 	font-weight: 600;
 	margin-bottom: 0.35rem;
+}
+
+.timeflow-card--month .timeflow-card__title {
+	font-weight: 700;
 }
 
 .timeflow-card__excerpt {
@@ -73,6 +151,7 @@
 	line-height: 1.4;
 }
 
+/* Gap placeholders */
 .timeflow-placeholder {
 	padding: 0.75rem 1rem;
 	border-radius: var(--radius-m);
@@ -80,18 +159,19 @@
 	background: var(--background-primary);
 }
 
-.timeflow-placeholder--today {
+.timeflow-placeholder--current {
 	border-color: var(--interactive-accent);
 }
 
 .timeflow-placeholder--week {
-	border-left: 3px solid var(--text-muted);
+	padding: 0.85rem 1rem;
+	border-left: 3px solid var(--interactive-accent);
 }
 
-.timeflow-placeholder__date {
-	font-size: var(--font-ui-small);
-	color: var(--text-muted);
-	margin-bottom: 0.25rem;
+.timeflow-placeholder--month {
+	padding: 1rem 1rem;
+	border-left: 4px solid var(--text-accent);
+	background: var(--background-secondary-alt, var(--background-primary));
 }
 
 .timeflow-placeholder__message {

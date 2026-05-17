@@ -1,13 +1,18 @@
 import type { App, EventRef } from "obsidian";
 import {
 	appHasDailyNotesPluginLoaded,
+	appHasMonthlyNotesPluginLoaded,
 	appHasWeeklyNotesPluginLoaded,
 	createDailyNote,
+	createMonthlyNote,
 	createWeeklyNote,
 	getAllDailyNotes,
+	getAllMonthlyNotes,
 	getAllWeeklyNotes,
 	getDailyNote,
 	getDailyNoteSettings,
+	getMonthlyNote,
+	getMonthlyNoteSettings,
 	getWeeklyNote,
 	getWeeklyNoteSettings,
 } from "obsidian-daily-notes-interface";
@@ -25,6 +30,7 @@ function dayIdToMoment(day: DayId) {
 export class ObsidianPeriodicNoteRepository implements IPeriodicNoteRepository {
 	private dailyNotesCache: ReturnType<typeof getAllDailyNotes> | null = null;
 	private weeklyNotesCache: ReturnType<typeof getAllWeeklyNotes> | null = null;
+	private monthlyNotesCache: ReturnType<typeof getAllMonthlyNotes> | null = null;
 	private changeCallbacks = new Set<() => void>();
 	private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -63,10 +69,23 @@ export class ObsidianPeriodicNoteRepository implements IPeriodicNoteRepository {
 		}
 	}
 
+	isMonthlyNotesEnabled(): boolean {
+		if (!appHasMonthlyNotesPluginLoaded()) {
+			return false;
+		}
+		try {
+			const settings = getMonthlyNoteSettings();
+			return Boolean(settings.folder && settings.format);
+		} catch {
+			return false;
+		}
+	}
+
 	refresh(): void {
 		if (!this.isConfigured()) {
 			this.dailyNotesCache = null;
 			this.weeklyNotesCache = null;
+			this.monthlyNotesCache = null;
 			return;
 		}
 		this.dailyNotesCache = getAllDailyNotes();
@@ -78,6 +97,15 @@ export class ObsidianPeriodicNoteRepository implements IPeriodicNoteRepository {
 			}
 		} else {
 			this.weeklyNotesCache = null;
+		}
+		if (this.isMonthlyNotesEnabled()) {
+			try {
+				this.monthlyNotesCache = getAllMonthlyNotes();
+			} catch {
+				this.monthlyNotesCache = null;
+			}
+		} else {
+			this.monthlyNotesCache = null;
 		}
 	}
 
@@ -106,6 +134,20 @@ export class ObsidianPeriodicNoteRepository implements IPeriodicNoteRepository {
 		return file ? { path: file.path } : undefined;
 	}
 
+	getNoteForMonth(monthStart: DayId): NoteRef | undefined {
+		if (!this.isMonthlyNotesEnabled()) {
+			return undefined;
+		}
+		if (!this.monthlyNotesCache) {
+			this.refresh();
+		}
+		if (!this.monthlyNotesCache) {
+			return undefined;
+		}
+		const file = getMonthlyNote(dayIdToMoment(monthStart), this.monthlyNotesCache);
+		return file ? { path: file.path } : undefined;
+	}
+
 	async createNoteForDay(date: DayId): Promise<NoteRef> {
 		const file = await createDailyNote(dayIdToMoment(date));
 		if (!file) {
@@ -120,6 +162,16 @@ export class ObsidianPeriodicNoteRepository implements IPeriodicNoteRepository {
 		const file = await createWeeklyNote(dayIdToMoment(weekStart));
 		if (!file) {
 			throw new Error(`Failed to create weekly note for ${weekStart}`);
+		}
+		this.refresh();
+		this.notifyNow();
+		return { path: file.path };
+	}
+
+	async createNoteForMonth(monthStart: DayId): Promise<NoteRef> {
+		const file = await createMonthlyNote(dayIdToMoment(monthStart));
+		if (!file) {
+			throw new Error(`Failed to create monthly note for ${monthStart}`);
 		}
 		this.refresh();
 		this.notifyNow();

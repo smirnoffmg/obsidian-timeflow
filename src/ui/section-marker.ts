@@ -1,11 +1,5 @@
-import { parseDayId } from "../domain/dates";
 import type { PeriodItem } from "../domain/types";
-import { formatWeekHeading } from "./period-format";
-
-function formatMonthLabel(date: string): string {
-	const d = parseDayId(date);
-	return d.toLocaleString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
-}
+import { formatMonthHeading, formatWeekHeading } from "./period-format";
 
 export function renderSectionMarker(item: PeriodItem): HTMLElement {
 	const el = document.createElement("div");
@@ -14,7 +8,7 @@ export function renderSectionMarker(item: PeriodItem): HTMLElement {
 	label.className = "timeflow-marker__label";
 	label.textContent =
 		item.kind === "month-marker"
-			? formatMonthLabel(item.date)
+			? formatMonthHeading(item.date)
 			: formatWeekHeading(item.date);
 	el.appendChild(label);
 	return el;

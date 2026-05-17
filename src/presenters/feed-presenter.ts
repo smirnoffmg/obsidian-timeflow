@@ -112,6 +112,8 @@ export class FeedPresenter {
 			weekStartsOn: settings.weekStartsOn,
 			weeklyNotesEnabled: this.repository.isWeeklyNotesEnabled(),
 			weekLookup: (weekStart) => this.repository.getNoteForWeek(weekStart),
+			monthlyNotesEnabled: this.repository.isMonthlyNotesEnabled(),
+			monthLookup: (monthStart) => this.repository.getNoteForMonth(monthStart),
 		};
 		this.items = buildTimeline(
 			this.window,
@@ -139,7 +141,11 @@ export class FeedPresenter {
 
 	private invalidateNoteExcerpts(): void {
 		const paths = this.items
-			.filter((item) => (item.kind === "day" || item.kind === "week") && item.note)
+			.filter(
+				(item) =>
+					(item.kind === "day" || item.kind === "week" || item.kind === "month") &&
+					item.note,
+			)
 			.map((item) => item.note!.path);
 		this.renderer.invalidateExcerpts(paths);
 	}
@@ -153,6 +159,8 @@ export class FeedPresenter {
 	private async createPeriod(item: PeriodItem): Promise<void> {
 		if (item.kind === "week") {
 			await this.repository.createNoteForWeek(item.date);
+		} else if (item.kind === "month") {
+			await this.repository.createNoteForMonth(item.date);
 		} else {
 			await this.repository.createNoteForDay(item.date);
 		}

@@ -33,6 +33,8 @@ describe("timeline-builder", () => {
 		weekStartsOn: 1,
 		weeklyNotesEnabled: false,
 		weekLookup: () => undefined,
+		monthlyNotesEnabled: false,
+		monthLookup: () => undefined,
 	};
 
 	it("buildTimeline includes markers", () => {

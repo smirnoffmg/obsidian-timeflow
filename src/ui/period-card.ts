@@ -1,5 +1,6 @@
 import type { PeriodItem } from "../domain/types";
-import { formatPeriodHeading, isCurrentPeriod } from "./period-format";
+import { isCurrentPeriod } from "./period-format";
+import { applyPeriodKindClass, buildPeriodHeader } from "./period-header";
 
 function titleFromPath(path: string): string {
 	const base = path.split("/").pop() ?? path;
@@ -17,23 +18,17 @@ export function renderPeriodCard(
 ): HTMLElement {
 	const root = document.createElement("div");
 	root.className = "timeflow-card";
-	if (item.kind === "week") {
-		root.classList.add("timeflow-card--week");
-	}
+	applyPeriodKindClass(root, "timeflow-card", item);
 	if (isCurrentPeriod(item, options.today, options.weekStartsOn)) {
-		root.classList.add("timeflow-card--today");
+		root.classList.add("timeflow-card--current");
 	}
 	root.dataset.id = item.id;
 
-	const dateEl = document.createElement("div");
-	dateEl.className = "timeflow-card__date";
-	dateEl.textContent = formatPeriodHeading(item);
+	root.appendChild(buildPeriodHeader(item));
 
 	const titleEl = document.createElement("div");
 	titleEl.className = "timeflow-card__title";
 	titleEl.textContent = item.note ? titleFromPath(item.note.path) : "";
-
-	root.appendChild(dateEl);
 	root.appendChild(titleEl);
 
 	if (options.excerpt) {

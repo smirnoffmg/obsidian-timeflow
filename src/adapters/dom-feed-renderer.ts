@@ -85,7 +85,7 @@ export class DomFeedRenderer implements IFeedRenderer {
 				continue;
 			}
 
-			if (item.kind === "day" || item.kind === "week") {
+			if (item.kind === "day" || item.kind === "week" || item.kind === "month") {
 				if (item.note) {
 					const excerpt = await this.loadExcerpt(item.note.path, maxChars);
 					this.listEl.appendChild(
