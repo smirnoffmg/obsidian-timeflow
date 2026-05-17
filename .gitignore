@@ -12,11 +12,15 @@ node_modules
 # They should be uploaded to GitHub releases instead.
 main.js
 
+# Accidental copy target when OBSIDIAN_VAULT=~ was not expanded (fixed in Makefile)
+~/
+
 # Exclude sourcemaps
 *.map
 
 # obsidian
 data.json
+.env
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store

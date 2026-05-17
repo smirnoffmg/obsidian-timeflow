@@ -1,6 +1,28 @@
 import esbuild from "esbuild";
 import process from "process";
-import { builtinModules } from 'node:module';
+import { cpSync } from "node:fs";
+import { join } from "node:path";
+import { builtinModules } from "node:module";
+
+const PLUGIN_FILES = ["main.js", "manifest.json", "styles.css"];
+
+function copyToVaultPlugin() {
+	const dest = process.env.OBSIDIAN_PLUGIN_DIR;
+	return {
+		name: "copy-to-vault",
+		setup(build) {
+			build.onEnd((result) => {
+				if (!dest || result.errors.length > 0) {
+					return;
+				}
+				for (const file of PLUGIN_FILES) {
+					cpSync(file, join(dest, file));
+				}
+				console.log(`Synced → ${dest}`);
+			});
+		},
+	};
+}
 
 const banner =
 `/*
@@ -39,6 +61,7 @@ const context = await esbuild.context({
 	treeShaking: true,
 	outfile: "main.js",
 	minify: prod,
+	plugins: [copyToVaultPlugin()],
 });
 
 if (prod) {

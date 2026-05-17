@@ -1,8 +1,112 @@
-/*
+.timeflow-root {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.timeflow-loading {
+	padding: 0.5rem 1rem;
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+}
 
-If your plugin does not need CSS, delete this file.
+.timeflow-scroll {
+	flex: 1;
+	overflow-y: auto;
+	padding: 0.5rem;
+}
 
-*/
+.timeflow-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.timeflow-marker {
+	padding: 0.75rem 0.25rem 0.25rem;
+}
+
+.timeflow-marker__label {
+	font-size: var(--font-ui-small);
+	font-weight: 600;
+	color: var(--text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.timeflow-card {
+	padding: 0.75rem 1rem;
+	border-radius: var(--radius-m);
+	background: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	cursor: pointer;
+	transition: border-color 0.15s ease;
+}
+
+.timeflow-card:hover {
+	border-color: var(--interactive-accent);
+}
+
+.timeflow-card--today {
+	border-color: var(--interactive-accent);
+	box-shadow: 0 0 0 1px var(--interactive-accent);
+}
+
+.timeflow-card__date {
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+	margin-bottom: 0.25rem;
+}
+
+.timeflow-card__title {
+	font-weight: 600;
+	margin-bottom: 0.35rem;
+}
+
+.timeflow-card__excerpt {
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+	line-height: 1.4;
+}
+
+.timeflow-placeholder {
+	padding: 0.75rem 1rem;
+	border-radius: var(--radius-m);
+	border: 1px dashed var(--background-modifier-border);
+	background: var(--background-primary);
+}
+
+.timeflow-placeholder--today {
+	border-color: var(--interactive-accent);
+}
+
+.timeflow-placeholder__date {
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+	margin-bottom: 0.25rem;
+}
+
+.timeflow-placeholder__message {
+	color: var(--text-muted);
+	margin-bottom: 0.5rem;
+}
+
+.timeflow-placeholder__button {
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border: none;
+	border-radius: var(--radius-s);
+	padding: 0.35rem 0.75rem;
+	cursor: pointer;
+	font-size: var(--font-ui-small);
+}
+
+.timeflow-placeholder__button:hover {
+	filter: brightness(1.05);
+}
+
+.timeflow-empty {
+	padding: 2rem 1.5rem;
+	color: var(--text-muted);
+	line-height: 1.5;
+}
