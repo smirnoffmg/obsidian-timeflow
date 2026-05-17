@@ -5,23 +5,33 @@ import { renderPeriodCard } from "../ui/period-card";
 import { renderPlaceholderCard } from "../ui/placeholder-card";
 import { renderSectionMarker } from "../ui/section-marker";
 
+function createDiv(className: string): HTMLDivElement {
+	const div = document.createElement("div");
+	div.className = className;
+	return div;
+}
+
 export class DomFeedRenderer implements IFeedRenderer {
-	private scrollEl: HTMLElement;
-	private listEl: HTMLElement;
-	private loadingEl: HTMLElement;
+	private scrollEl: HTMLDivElement;
+	private listEl: HTMLDivElement;
+	private loadingEl: HTMLDivElement;
 	private excerptCache = new Map<string, string>();
+	private renderGeneration = 0;
 
 	constructor(
 		container: HTMLElement,
 		private readonly excerptProvider: IExcerptProvider,
 		private readonly getExcerptMaxChars: () => number,
 	) {
-		this.loadingEl = container.createDiv({ cls: "timeflow-loading" });
-		this.loadingEl.setText("Loading…");
-		this.loadingEl.hide();
+		this.loadingEl = createDiv("timeflow-loading");
+		this.loadingEl.textContent = "Loading…";
+		this.loadingEl.hidden = true;
+		container.appendChild(this.loadingEl);
 
-		this.scrollEl = container.createDiv({ cls: "timeflow-scroll" });
-		this.listEl = this.scrollEl.createDiv({ cls: "timeflow-list" });
+		this.scrollEl = createDiv("timeflow-scroll");
+		this.listEl = createDiv("timeflow-list");
+		this.scrollEl.appendChild(this.listEl);
+		container.appendChild(this.scrollEl);
 	}
 
 	getScrollElement(): HTMLElement {
@@ -37,11 +47,7 @@ export class DomFeedRenderer implements IFeedRenderer {
 	}
 
 	setLoading(loading: boolean): void {
-		if (loading) {
-			this.loadingEl.show();
-		} else {
-			this.loadingEl.hide();
-		}
+		this.loadingEl.hidden = !loading;
 	}
 
 	scrollToItem(id: string): void {
@@ -53,8 +59,12 @@ export class DomFeedRenderer implements IFeedRenderer {
 
 	render(items: PeriodItem[], context: RenderContext, options?: RenderOptions): void {
 		const scrollTop = options?.preserveScroll ? this.scrollEl.scrollTop : 0;
-		this.listEl.empty();
-		void this.renderItems(items, context).then(() => {
+		const generation = ++this.renderGeneration;
+		this.listEl.replaceChildren();
+		void this.renderItems(items, context, generation).then(() => {
+			if (generation !== this.renderGeneration) {
+				return;
+			}
 			if (options?.preserveScroll) {
 				this.scrollEl.scrollTop = scrollTop;
 			}
@@ -72,14 +82,23 @@ export class DomFeedRenderer implements IFeedRenderer {
 	}
 
 	destroy(): void {
-		this.listEl.empty();
+		this.renderGeneration++;
+		this.listEl.replaceChildren();
 		this.excerptCache.clear();
 	}
 
-	private async renderItems(items: PeriodItem[], context: RenderContext): Promise<void> {
+	private async renderItems(
+		items: PeriodItem[],
+		context: RenderContext,
+		generation: number,
+	): Promise<void> {
 		const maxChars = this.getExcerptMaxChars();
 
 		for (const item of items) {
+			if (generation !== this.renderGeneration) {
+				return;
+			}
+
 			if (item.kind === "week-marker" || item.kind === "month-marker") {
 				this.listEl.appendChild(renderSectionMarker(item));
 				continue;
@@ -88,6 +107,9 @@ export class DomFeedRenderer implements IFeedRenderer {
 			if (item.kind === "day" || item.kind === "week" || item.kind === "month") {
 				if (item.note) {
 					const excerpt = await this.loadExcerpt(item.note.path, maxChars);
+					if (generation !== this.renderGeneration) {
+						return;
+					}
 					this.listEl.appendChild(
 						renderPeriodCard(item, {
 							today: context.today,

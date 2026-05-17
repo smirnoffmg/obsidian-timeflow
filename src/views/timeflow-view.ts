@@ -29,9 +29,10 @@ export class TimeflowView extends ItemView {
 	}
 
 	async onOpen(): Promise<void> {
+		this.containerEl.addClass("timeflow-view");
 		const { contentEl } = this;
 		contentEl.empty();
-		contentEl.addClass("timeflow-root");
+		const root = contentEl.createDiv({ cls: "timeflow-root" });
 
 		const repository = new ObsidianPeriodicNoteRepository(
 			this.app,
@@ -40,7 +41,7 @@ export class TimeflowView extends ItemView {
 
 		const excerptProvider = new ObsidianExcerptProvider(this.app);
 		this.renderer = new DomFeedRenderer(
-			contentEl,
+			root,
 			excerptProvider,
 			() => this.plugin.settings.excerptMaxChars,
 		);
@@ -58,7 +59,7 @@ export class TimeflowView extends ItemView {
 		);
 
 		if (!this.presenter.isConfigured()) {
-			this.renderEmptyState(contentEl);
+			this.renderEmptyState(root);
 			return;
 		}
 
@@ -70,6 +71,7 @@ export class TimeflowView extends ItemView {
 	}
 
 	async onClose(): Promise<void> {
+		this.containerEl.removeClass("timeflow-view");
 		this.presenter?.detach();
 		this.presenter = null;
 		this.renderer?.destroy();

@@ -1,7 +1,50 @@
+/* Isolate Timeflow leaf from reading view + Dataview TABLE rendering */
+.workspace-leaf-content[data-type="timeflow"] .view-content,
+.workspace-leaf-content.timeflow-view .view-content {
+	padding: 0;
+	overflow: hidden;
+}
+
+.workspace-leaf-content[data-type="timeflow"] .view-content > :not(.timeflow-root),
+.workspace-leaf-content.timeflow-view .view-content > :not(.timeflow-root) {
+	display: none !important;
+}
+
+/* Dataview / markdown preview must not appear in this pane (cards are plain text only) */
+.workspace-leaf-content[data-type="timeflow"] :is(
+	.markdown-reading-view,
+	.markdown-preview-view,
+	.markdown-rendered,
+	.block-language-dataview,
+	.block-language-dataviewjs,
+	.dataview-result-list-root,
+	.dataview.table-view,
+	.table-view-table,
+	.cm-html-widget
+) {
+	display: none !important;
+}
+
 .timeflow-root {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	font-family: var(--font-interface);
+	font-size: var(--font-ui-medium);
+	line-height: var(--line-height-normal);
+	color: var(--text-normal);
+}
+
+.timeflow-root,
+.timeflow-root * {
+	box-sizing: border-box;
+}
+
+.timeflow-card__excerpt,
+.timeflow-card__title,
+.timeflow-period__heading {
+	white-space: normal;
+	word-break: break-word;
 }
 
 .timeflow-loading {
@@ -137,6 +180,7 @@
 }
 
 .timeflow-card__title {
+	font-family: var(--font-interface);
 	font-weight: 600;
 	margin-bottom: 0.35rem;
 }
@@ -149,6 +193,12 @@
 	font-size: var(--font-ui-small);
 	color: var(--text-muted);
 	line-height: 1.4;
+	white-space: normal;
+	word-break: break-word;
+	font-family: var(--font-interface);
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
 }
 
 /* Gap placeholders */

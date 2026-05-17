@@ -1,5 +1,12 @@
 import { TFile, type App } from "obsidian";
 import type { IExcerptProvider } from "../ports/excerpt-provider";
+import {
+	extractDataviewQueries,
+	getDataviewApi,
+	noteBodyWithoutDataviewFences,
+	plainExcerptFromDataviewQuery,
+} from "../utils/dataview-plain-excerpt";
+import { markdownToPlainText, truncatePlainText } from "../utils/markdown-to-plain";
 
 export class ObsidianExcerptProvider implements IExcerptProvider {
 	constructor(private readonly app: App) {}
@@ -9,16 +16,24 @@ export class ObsidianExcerptProvider implements IExcerptProvider {
 		if (!(file instanceof TFile)) {
 			return "";
 		}
-		// Read from disk so post-create template/plugin edits are reflected on vault modify.
 		const content = await this.app.vault.read(file);
-		const plain = content
-			.replace(/^---[\s\S]*?---\n/m, "")
-			.replace(/[#>*`[\]]/g, "")
-			.replace(/\n+/g, " ")
-			.trim();
-		if (plain.length <= maxChars) {
-			return plain;
+
+		const dataviewApi = getDataviewApi(this.app);
+		if (dataviewApi) {
+			for (const query of extractDataviewQueries(content)) {
+				const fromTable = await plainExcerptFromDataviewQuery(
+					dataviewApi,
+					query,
+					file.path,
+					maxChars,
+				);
+				if (fromTable) {
+					return fromTable;
+				}
+			}
 		}
-		return `${plain.slice(0, maxChars).trim()}…`;
+
+		const plain = markdownToPlainText(noteBodyWithoutDataviewFences(content));
+		return truncatePlainText(plain, maxChars);
 	}
 }

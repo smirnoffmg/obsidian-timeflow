@@ -28,13 +28,15 @@ export function renderPeriodCard(
 
 	const titleEl = document.createElement("div");
 	titleEl.className = "timeflow-card__title";
-	titleEl.textContent = item.note ? titleFromPath(item.note.path) : "";
+	if (item.note) {
+		titleEl.appendChild(document.createTextNode(titleFromPath(item.note.path)));
+	}
 	root.appendChild(titleEl);
 
 	if (options.excerpt) {
 		const excerptEl = document.createElement("div");
 		excerptEl.className = "timeflow-card__excerpt";
-		excerptEl.textContent = options.excerpt;
+		excerptEl.appendChild(document.createTextNode(options.excerpt));
 		root.appendChild(excerptEl);
 	}
 
