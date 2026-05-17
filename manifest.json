@@ -1,7 +1,7 @@
 {
 	"id": "timeflow-periodic",
 	"name": "Timeflow Periodic",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "1.5.0",
 	"description": "Infinite vertical temporal feed for your daily Periodic Notes.",
 	"author": "smirnoffmg",

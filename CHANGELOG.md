@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+- Rename community plugin id to `timeflow-periodic` (avoids conflict with existing **Timeflow** plugin)
+- Rename catalog display name to **Timeflow Periodic**
+- Use sentence case for the timeline tab title in the UI
+
 ## 1.0.0
 
 Initial public release.

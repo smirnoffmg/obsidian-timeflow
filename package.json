@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-timeflow",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Infinite vertical temporal feed for Periodic Notes",
 	"author": "smirnoffmg",
 	"main": "main.js",
