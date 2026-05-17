@@ -1,4 +1,5 @@
-import type { MarkerOptions, PeriodItem, TimelineWindow } from "../domain/types";
+import type { PeriodItem, TimelineWindow } from "../domain/types";
+import type { StreamInsertOptions } from "../domain/timeline/marker-inserter";
 import {
 	buildTimeline,
 	clampWindowToToday,
@@ -9,7 +10,7 @@ import {
 	findTodayItemId,
 } from "../domain/timeline/scroll-window-policy";
 import type { IClock } from "../ports/clock";
-import type { IDailyNoteRepository } from "../ports/daily-note-repository";
+import type { IPeriodicNoteRepository } from "../ports/periodic-note-repository";
 import type { IFeedRenderer, RenderContext } from "../ports/feed-renderer";
 import type { TimeflowSettings } from "../timeflow-settings";
 
@@ -25,7 +26,7 @@ export class FeedPresenter {
 
 	constructor(
 		private readonly clock: IClock,
-		private readonly repository: IDailyNoteRepository,
+		private readonly repository: IPeriodicNoteRepository,
 		private readonly renderer: IFeedRenderer,
 		private readonly getSettings: () => TimeflowSettings,
 		private readonly callbacks: FeedPresenterCallbacks,
@@ -105,15 +106,17 @@ export class FeedPresenter {
 
 	private rebuildItems(): void {
 		const settings = this.getSettings();
-		const markerOptions: MarkerOptions = {
+		const streamOptions: StreamInsertOptions = {
 			showWeekMarkers: settings.showWeekMarkers,
 			showMonthMarkers: settings.showMonthMarkers,
 			weekStartsOn: settings.weekStartsOn,
+			weeklyNotesEnabled: this.repository.isWeeklyNotesEnabled(),
+			weekLookup: (weekStart) => this.repository.getNoteForWeek(weekStart),
 		};
 		this.items = buildTimeline(
 			this.window,
 			(day) => this.repository.getNoteForDay(day),
-			markerOptions,
+			streamOptions,
 		);
 	}
 
@@ -127,15 +130,16 @@ export class FeedPresenter {
 			today: this.clock.today(),
 			isLoading: this.loading,
 			onOpenNote: (path) => this.callbacks.onOpenNote(path),
-			onCreateNote: (date) => {
-				void this.createNote(date);
+			onCreatePeriod: (item) => {
+				void this.createPeriod(item);
 			},
+			weekStartsOn: this.getSettings().weekStartsOn,
 		};
 	}
 
 	private invalidateNoteExcerpts(): void {
 		const paths = this.items
-			.filter((item) => item.kind === "day" && item.note)
+			.filter((item) => (item.kind === "day" || item.kind === "week") && item.note)
 			.map((item) => item.note!.path);
 		this.renderer.invalidateExcerpts(paths);
 	}
@@ -146,8 +150,12 @@ export class FeedPresenter {
 		});
 	}
 
-	private async createNote(date: string): Promise<void> {
-		await this.repository.createNoteForDay(date);
+	private async createPeriod(item: PeriodItem): Promise<void> {
+		if (item.kind === "week") {
+			await this.repository.createNoteForWeek(item.date);
+		} else {
+			await this.repository.createNoteForDay(item.date);
+		}
 		await this.refresh();
 	}
 }

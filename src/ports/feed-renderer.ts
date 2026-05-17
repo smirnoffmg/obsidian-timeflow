@@ -2,9 +2,10 @@ import type { DayId, PeriodItem } from "../domain/types";
 
 export interface RenderContext {
 	today: DayId;
+	weekStartsOn: number;
 	isLoading: boolean;
 	onOpenNote: (path: string) => void;
-	onCreateNote: (date: DayId) => void;
+	onCreatePeriod: (item: PeriodItem) => void;
 }
 
 export interface RenderOptions {

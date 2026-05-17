@@ -2,15 +2,15 @@ import { describe, expect, it, vi } from "vitest";
 import { FeedPresenter } from "../../src/presenters/feed-presenter";
 import { DEFAULT_SETTINGS } from "../../src/timeflow-settings";
 import {
-	FakeDailyNoteRepository,
 	FakeFeedRenderer,
+	FakePeriodicNoteRepository,
 	FixedClock,
 } from "../__mocks__/fakes";
 
 describe("FeedPresenter", () => {
 	it("renders after refresh when configured", async () => {
-		const repo = new FakeDailyNoteRepository();
-		repo.setNote("2026-05-15", "daily/2026-05-15.md");
+		const repo = new FakePeriodicNoteRepository();
+		repo.setDailyNote("2026-05-15", "daily/2026-05-15.md");
 		const renderer = new FakeFeedRenderer();
 		const presenter = new FeedPresenter(
 			new FixedClock("2026-05-15"),
@@ -28,7 +28,7 @@ describe("FeedPresenter", () => {
 	});
 
 	it("renders empty when not configured", async () => {
-		const repo = new FakeDailyNoteRepository();
+		const repo = new FakePeriodicNoteRepository();
 		repo.configured = false;
 		const renderer = new FakeFeedRenderer();
 		const presenter = new FeedPresenter(
@@ -44,7 +44,7 @@ describe("FeedPresenter", () => {
 	});
 
 	it("jumpToToday scrolls to today item", () => {
-		const repo = new FakeDailyNoteRepository();
+		const repo = new FakePeriodicNoteRepository();
 		const renderer = new FakeFeedRenderer();
 		const presenter = new FeedPresenter(
 			new FixedClock("2026-05-15"),
@@ -59,8 +59,8 @@ describe("FeedPresenter", () => {
 	});
 
 	it("invalidates excerpts when vault notes change", async () => {
-		const repo = new FakeDailyNoteRepository();
-		repo.setNote("2026-05-15", "daily/2026-05-15.md");
+		const repo = new FakePeriodicNoteRepository();
+		repo.setDailyNote("2026-05-15", "daily/2026-05-15.md");
 		const renderer = new FakeFeedRenderer();
 		const presenter = new FeedPresenter(
 			new FixedClock("2026-05-15"),
@@ -80,7 +80,7 @@ describe("FeedPresenter", () => {
 	});
 
 	it("extends window on scroll near edge", async () => {
-		const repo = new FakeDailyNoteRepository();
+		const repo = new FakePeriodicNoteRepository();
 		const renderer = new FakeFeedRenderer();
 		renderer.scrollTop = 650;
 		renderer.scrollHeight = 1000;

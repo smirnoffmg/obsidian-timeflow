@@ -5,7 +5,7 @@ An [Obsidian](https://obsidian.md/) community plugin that turns your daily Perio
 ## Features
 
 - **Continuous timeline** — daily entries in one scrollable view (newest at the top, no future dates)
-- **Mixed stream** — week and month section markers for rhythm and orientation
+- **Mixed stream** — daily and weekly note cards; month/week section markers when weekly notes are off
 - **Note cards** — existing daily notes show a title and excerpt; click to open
 - **Gap placeholders** — missing days appear as interactive cards with **Create note**
 - **Infinite scroll** — scroll down to load older days automatically
@@ -15,6 +15,7 @@ An [Obsidian](https://obsidian.md/) community plugin that turns your daily Perio
 
 - Obsidian **1.5.0** or newer
 - [Periodic Notes](https://github.com/liamcain/obsidian-periodic-notes) or core **Daily notes** enabled, with folder and date format configured
+- Optional: **Weekly notes** in Periodic Notes — shown as full cards at the start of each week (replaces week divider markers)
 
 ## Usage
 

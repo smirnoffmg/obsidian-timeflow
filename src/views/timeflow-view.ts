@@ -1,7 +1,7 @@
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { ObsidianClock } from "../adapters/obsidian-clock";
 import { DomFeedRenderer } from "../adapters/dom-feed-renderer";
-import { ObsidianDailyNoteRepository } from "../adapters/obsidian-daily-note-repository";
+import { ObsidianPeriodicNoteRepository } from "../adapters/obsidian-periodic-note-repository";
 import { ObsidianExcerptProvider } from "../adapters/obsidian-excerpt-provider";
 import { FeedPresenter } from "../presenters/feed-presenter";
 import type TimeflowPlugin from "../main";
@@ -33,7 +33,7 @@ export class TimeflowView extends ItemView {
 		contentEl.empty();
 		contentEl.addClass("timeflow-root");
 
-		const repository = new ObsidianDailyNoteRepository(
+		const repository = new ObsidianPeriodicNoteRepository(
 			this.app,
 			(ref) => this.plugin.registerEvent(ref),
 		);

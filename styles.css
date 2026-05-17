@@ -52,6 +52,10 @@
 	box-shadow: 0 0 0 1px var(--interactive-accent);
 }
 
+.timeflow-card--week {
+	border-left: 3px solid var(--interactive-accent);
+}
+
 .timeflow-card__date {
 	font-size: var(--font-ui-small);
 	color: var(--text-muted);
@@ -78,6 +82,10 @@
 
 .timeflow-placeholder--today {
 	border-color: var(--interactive-accent);
+}
+
+.timeflow-placeholder--week {
+	border-left: 3px solid var(--text-muted);
 }
 
 .timeflow-placeholder__date {

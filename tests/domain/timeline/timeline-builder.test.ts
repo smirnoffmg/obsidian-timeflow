@@ -27,11 +27,19 @@ describe("timeline-builder", () => {
 		expect(items[0]?.note?.path).toBe("daily/2026-05-01.md");
 	});
 
+	const baseStream = {
+		showWeekMarkers: false,
+		showMonthMarkers: true,
+		weekStartsOn: 1,
+		weeklyNotesEnabled: false,
+		weekLookup: () => undefined,
+	};
+
 	it("buildTimeline includes markers", () => {
 		const items = buildTimeline(
 			{ start: "2026-05-01", end: "2026-05-02" },
 			() => undefined,
-			{ showWeekMarkers: false, showMonthMarkers: true, weekStartsOn: 1 },
+			baseStream,
 		);
 		expect(items.some((i) => i.kind === "month-marker")).toBe(true);
 		expect(items.some((i) => i.kind === "day")).toBe(true);
@@ -41,7 +49,7 @@ describe("timeline-builder", () => {
 		const items = buildTimeline(
 			{ start: "2026-05-01", end: "2026-05-03" },
 			() => undefined,
-			{ showWeekMarkers: false, showMonthMarkers: false, weekStartsOn: 1 },
+			{ ...baseStream, showMonthMarkers: false },
 		);
 		const days = items.filter((i) => i.kind === "day");
 		expect(days.map((d) => d.date)).toEqual(["2026-05-03", "2026-05-02", "2026-05-01"]);

@@ -1,14 +1,19 @@
 import type { App, EventRef } from "obsidian";
 import {
 	appHasDailyNotesPluginLoaded,
+	appHasWeeklyNotesPluginLoaded,
 	createDailyNote,
+	createWeeklyNote,
 	getAllDailyNotes,
+	getAllWeeklyNotes,
 	getDailyNote,
 	getDailyNoteSettings,
+	getWeeklyNote,
+	getWeeklyNoteSettings,
 } from "obsidian-daily-notes-interface";
 import { parseDayId } from "../domain/dates";
 import type { DayId, NoteRef } from "../domain/types";
-import type { IDailyNoteRepository } from "../ports/daily-note-repository";
+import type { IPeriodicNoteRepository } from "../ports/periodic-note-repository";
 
 const DEBOUNCE_MS = 300;
 
@@ -17,8 +22,9 @@ function dayIdToMoment(day: DayId) {
 	return window.moment([date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()]);
 }
 
-export class ObsidianDailyNoteRepository implements IDailyNoteRepository {
-	private notesCache: ReturnType<typeof getAllDailyNotes> | null = null;
+export class ObsidianPeriodicNoteRepository implements IPeriodicNoteRepository {
+	private dailyNotesCache: ReturnType<typeof getAllDailyNotes> | null = null;
+	private weeklyNotesCache: ReturnType<typeof getAllWeeklyNotes> | null = null;
 	private changeCallbacks = new Set<() => void>();
 	private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -45,22 +51,58 @@ export class ObsidianDailyNoteRepository implements IDailyNoteRepository {
 		}
 	}
 
+	isWeeklyNotesEnabled(): boolean {
+		if (!appHasWeeklyNotesPluginLoaded()) {
+			return false;
+		}
+		try {
+			const settings = getWeeklyNoteSettings();
+			return Boolean(settings.folder && settings.format);
+		} catch {
+			return false;
+		}
+	}
+
 	refresh(): void {
 		if (!this.isConfigured()) {
-			this.notesCache = null;
+			this.dailyNotesCache = null;
+			this.weeklyNotesCache = null;
 			return;
 		}
-		this.notesCache = getAllDailyNotes();
+		this.dailyNotesCache = getAllDailyNotes();
+		if (this.isWeeklyNotesEnabled()) {
+			try {
+				this.weeklyNotesCache = getAllWeeklyNotes();
+			} catch {
+				this.weeklyNotesCache = null;
+			}
+		} else {
+			this.weeklyNotesCache = null;
+		}
 	}
 
 	getNoteForDay(date: DayId): NoteRef | undefined {
-		if (!this.notesCache) {
+		if (!this.dailyNotesCache) {
 			this.refresh();
 		}
-		if (!this.notesCache) {
+		if (!this.dailyNotesCache) {
 			return undefined;
 		}
-		const file = getDailyNote(dayIdToMoment(date), this.notesCache);
+		const file = getDailyNote(dayIdToMoment(date), this.dailyNotesCache);
+		return file ? { path: file.path } : undefined;
+	}
+
+	getNoteForWeek(weekStart: DayId): NoteRef | undefined {
+		if (!this.isWeeklyNotesEnabled()) {
+			return undefined;
+		}
+		if (!this.weeklyNotesCache) {
+			this.refresh();
+		}
+		if (!this.weeklyNotesCache) {
+			return undefined;
+		}
+		const file = getWeeklyNote(dayIdToMoment(weekStart), this.weeklyNotesCache);
 		return file ? { path: file.path } : undefined;
 	}
 
@@ -68,6 +110,16 @@ export class ObsidianDailyNoteRepository implements IDailyNoteRepository {
 		const file = await createDailyNote(dayIdToMoment(date));
 		if (!file) {
 			throw new Error(`Failed to create daily note for ${date}`);
+		}
+		this.refresh();
+		this.notifyNow();
+		return { path: file.path };
+	}
+
+	async createNoteForWeek(weekStart: DayId): Promise<NoteRef> {
+		const file = await createWeeklyNote(dayIdToMoment(weekStart));
+		if (!file) {
+			throw new Error(`Failed to create weekly note for ${weekStart}`);
 		}
 		this.refresh();
 		this.notifyNow();

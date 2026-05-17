@@ -1,6 +1,6 @@
 import type { DayId, NoteRef } from "../../src/domain/types";
 import type { IClock } from "../../src/ports/clock";
-import type { IDailyNoteRepository } from "../../src/ports/daily-note-repository";
+import type { IPeriodicNoteRepository } from "../../src/ports/periodic-note-repository";
 import type {
 	IFeedRenderer,
 	RenderContext,
@@ -16,28 +16,48 @@ export class FixedClock implements IClock {
 	}
 }
 
-export class FakeDailyNoteRepository implements IDailyNoteRepository {
-	private notes = new Map<DayId, NoteRef>();
+export class FakePeriodicNoteRepository implements IPeriodicNoteRepository {
+	private dailyNotes = new Map<DayId, NoteRef>();
+	private weeklyNotes = new Map<DayId, NoteRef>();
 	private listeners = new Set<() => void>();
 	configured = true;
+	weeklyEnabled = false;
 
 	isConfigured(): boolean {
 		return this.configured;
 	}
 
-	setNote(day: DayId, path: string): void {
-		this.notes.set(day, { path });
+	isWeeklyNotesEnabled(): boolean {
+		return this.weeklyEnabled;
+	}
+
+	setDailyNote(day: DayId, path: string): void {
+		this.dailyNotes.set(day, { path });
+	}
+
+	setWeeklyNote(weekStart: DayId, path: string): void {
+		this.weeklyNotes.set(weekStart, { path });
 	}
 
 	refresh(): void {}
 
 	getNoteForDay(date: DayId): NoteRef | undefined {
-		return this.notes.get(date);
+		return this.dailyNotes.get(date);
+	}
+
+	getNoteForWeek(weekStart: DayId): NoteRef | undefined {
+		return this.weeklyNotes.get(weekStart);
 	}
 
 	async createNoteForDay(date: DayId): Promise<NoteRef> {
 		const ref = { path: `daily/${date}.md` };
-		this.notes.set(date, ref);
+		this.dailyNotes.set(date, ref);
+		return ref;
+	}
+
+	async createNoteForWeek(weekStart: DayId): Promise<NoteRef> {
+		const ref = { path: `weekly/${weekStart}.md` };
+		this.weeklyNotes.set(weekStart, ref);
 		return ref;
 	}
 
@@ -52,6 +72,9 @@ export class FakeDailyNoteRepository implements IDailyNoteRepository {
 		}
 	}
 }
+
+/** @deprecated Use FakePeriodicNoteRepository */
+export const FakeDailyNoteRepository = FakePeriodicNoteRepository;
 
 export class FakeFeedRenderer implements IFeedRenderer {
 	lastItems: PeriodItem[] = [];

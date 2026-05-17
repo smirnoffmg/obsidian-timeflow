@@ -1,17 +1,26 @@
 import { startOfMonth, startOfWeek } from "../dates";
-import type { DayId, MarkerOptions, PeriodItem } from "../types";
+import type { DayId, MarkerOptions, PeriodItem, WeekNoteLookup } from "../types";
 
 export function weekMarkerId(weekStart: DayId): string {
 	return `week-marker-${weekStart}`;
+}
+
+export function weekPeriodId(weekStart: DayId): string {
+	return `week-${weekStart}`;
 }
 
 export function monthMarkerId(monthStart: DayId): string {
 	return `month-marker-${monthStart}`;
 }
 
+export interface StreamInsertOptions extends MarkerOptions {
+	weeklyNotesEnabled: boolean;
+	weekLookup: WeekNoteLookup;
+}
+
 export function insertMarkers(
 	days: PeriodItem[],
-	options: MarkerOptions,
+	options: StreamInsertOptions,
 ): PeriodItem[] {
 	const result: PeriodItem[] = [];
 	let lastWeekStart: DayId | null = null;
@@ -35,16 +44,24 @@ export function insertMarkers(
 			}
 		}
 
-		if (options.showWeekMarkers) {
-			const weekStart = startOfWeek(day.date, options.weekStartsOn);
-			if (weekStart !== lastWeekStart) {
+		const weekStart = startOfWeek(day.date, options.weekStartsOn);
+		if (weekStart !== lastWeekStart) {
+			if (options.weeklyNotesEnabled) {
+				const note = options.weekLookup(weekStart);
+				result.push({
+					kind: "week",
+					date: weekStart,
+					note,
+					id: weekPeriodId(weekStart),
+				});
+			} else if (options.showWeekMarkers) {
 				result.push({
 					kind: "week-marker",
 					date: weekStart,
 					id: weekMarkerId(weekStart),
 				});
-				lastWeekStart = weekStart;
 			}
+			lastWeekStart = weekStart;
 		}
 
 		result.push(day);

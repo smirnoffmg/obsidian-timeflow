@@ -85,22 +85,26 @@ export class DomFeedRenderer implements IFeedRenderer {
 				continue;
 			}
 
-			if (item.note) {
-				const excerpt = await this.loadExcerpt(item.note.path, maxChars);
-				this.listEl.appendChild(
-					renderPeriodCard(item, {
-						today: context.today,
-						excerpt,
-						onOpen: context.onOpenNote,
-					}),
-				);
-			} else {
-				this.listEl.appendChild(
-					renderPlaceholderCard(item, {
-						today: context.today,
-						onCreate: context.onCreateNote,
-					}),
-				);
+			if (item.kind === "day" || item.kind === "week") {
+				if (item.note) {
+					const excerpt = await this.loadExcerpt(item.note.path, maxChars);
+					this.listEl.appendChild(
+						renderPeriodCard(item, {
+							today: context.today,
+							weekStartsOn: context.weekStartsOn,
+							excerpt,
+							onOpen: context.onOpenNote,
+						}),
+					);
+				} else {
+					this.listEl.appendChild(
+						renderPlaceholderCard(item, {
+							today: context.today,
+							weekStartsOn: context.weekStartsOn,
+							onCreate: context.onCreatePeriod,
+						}),
+					);
+				}
 			}
 		}
 	}

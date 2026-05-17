@@ -1,12 +1,6 @@
 import { addDays, compareDays, eachDayInclusive } from "../dates";
-import type {
-	DayId,
-	MarkerOptions,
-	NoteLookup,
-	PeriodItem,
-	TimelineWindow,
-} from "../types";
-import { insertMarkers } from "./marker-inserter";
+import type { DayId, NoteLookup, PeriodItem, TimelineWindow } from "../types";
+import { type StreamInsertOptions, insertMarkers } from "./marker-inserter";
 
 export function buildDayItems(
 	window: TimelineWindow,
@@ -27,10 +21,10 @@ export function buildDayItems(
 export function buildTimeline(
 	window: TimelineWindow,
 	lookup: NoteLookup,
-	markerOptions: MarkerOptions,
+	streamOptions: StreamInsertOptions,
 ): PeriodItem[] {
 	const dayItems = buildDayItems(window, lookup);
-	const withMarkers = insertMarkers(dayItems, markerOptions);
+	const withMarkers = insertMarkers(dayItems, streamOptions);
 	return reverseTimeline(withMarkers);
 }
 
