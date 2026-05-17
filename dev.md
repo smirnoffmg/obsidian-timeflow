@@ -16,7 +16,7 @@ make install
 make local-dev   # build, sync to vault, watch for changes
 ```
 
-3. In Obsidian: **Settings → Community plugins** → enable **Timeflow** → reload.
+3. In Obsidian: **Settings → Community plugins** → enable **Timeflow Periodic** → reload.
 
 Artifacts sync to `$OBSIDIAN_VAULT/.obsidian/plugins/timeflow-periodic/` (`main.js`, `manifest.json`, `styles.css`).
 
@@ -29,7 +29,7 @@ make install
 make sync-demo
 ```
 
-Open the `demo-vault/` folder in Obsidian, enable **Periodic Notes** and **Timeflow**, then capture assets into [images/](images/).
+Open the `demo-vault/` folder in Obsidian, enable **Periodic Notes** and **Timeflow Periodic**, then capture assets into [images/](images/).
 
 ## Commands
 

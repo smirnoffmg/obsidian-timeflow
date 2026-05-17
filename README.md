@@ -8,7 +8,7 @@ An [Obsidian](https://obsidian.md/) community plugin that turns your daily Perio
 
 1. Open **Settings -> Community plugins**.
 2. Turn on community plugins and select **Browse**.
-3. Search for **Timeflow**, install, and enable.
+3. Search for **Timeflow Periodic**, install, and enable.
 
 For local development, see [dev.md](dev.md).
 
@@ -34,14 +34,14 @@ Timeflow runs entirely offline in your vault. It does not send note contents els
 
 ## Usage
 
-1. Enable **Timeflow** in **Settings -> Community plugins**.
+1. Enable **Timeflow Periodic** in **Settings -> Community plugins**.
 2. Open the timeline:
    - Click the **history** ribbon icon, or
    - Command palette -> **Open timeline**
 3. **Jump to today** from the command palette when needed.
 4. Click a card to open a note, or **Create note** on a gap day.
 
-Configure the initial date range and markers in **Settings -> Timeflow**.
+Configure the initial date range and markers in **Settings -> Timeflow Periodic**.
 
 ## Development
 
