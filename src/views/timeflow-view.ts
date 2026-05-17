@@ -6,7 +6,7 @@ import { ObsidianExcerptProvider } from "../adapters/obsidian-excerpt-provider";
 import { FeedPresenter } from "../presenters/feed-presenter";
 import type TimeflowPlugin from "../main";
 
-export const VIEW_TYPE_TIMEFLOW = "timeflow";
+export const VIEW_TYPE_TIMEFLOW = "timeflow-periodic";
 
 export class TimeflowView extends ItemView {
 	private presenter: FeedPresenter | null = null;

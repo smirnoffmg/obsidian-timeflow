@@ -18,7 +18,7 @@ make local-dev   # build, sync to vault, watch for changes
 
 3. In Obsidian: **Settings → Community plugins** → enable **Timeflow** → reload.
 
-Artifacts sync to `$OBSIDIAN_VAULT/.obsidian/plugins/timeflow/` (`main.js`, `manifest.json`, `styles.css`).
+Artifacts sync to `$OBSIDIAN_VAULT/.obsidian/plugins/timeflow-periodic/` (`main.js`, `manifest.json`, `styles.css`).
 
 ## Demo vault (screenshots)
 

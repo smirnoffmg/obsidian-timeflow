@@ -1,17 +1,17 @@
 /* Isolate Timeflow leaf from reading view + Dataview TABLE rendering */
-.workspace-leaf-content[data-type="timeflow"] .view-content,
+.workspace-leaf-content[data-type="timeflow-periodic"] .view-content,
 .workspace-leaf-content.timeflow-view .view-content {
 	padding: 0;
 	overflow: hidden;
 }
 
-.workspace-leaf-content[data-type="timeflow"] .view-content > :not(.timeflow-root),
+.workspace-leaf-content[data-type="timeflow-periodic"] .view-content > :not(.timeflow-root),
 .workspace-leaf-content.timeflow-view .view-content > :not(.timeflow-root) {
 	display: none !important;
 }
 
 /* Dataview / markdown preview must not appear in this pane (cards are plain text only) */
-.workspace-leaf-content[data-type="timeflow"] :is(
+.workspace-leaf-content[data-type="timeflow-periodic"] :is(
 	.markdown-reading-view,
 	.markdown-preview-view,
 	.markdown-rendered,

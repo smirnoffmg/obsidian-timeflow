@@ -1,5 +1,5 @@
 {
-	"id": "timeflow",
+	"id": "timeflow-periodic",
 	"name": "Timeflow",
 	"author": "smirnoffmg",
 	"description": "Infinite vertical temporal feed for Periodic Notes (daily, weekly, monthly).",

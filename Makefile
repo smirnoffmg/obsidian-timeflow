@@ -4,7 +4,7 @@ export
 # Make does not expand ~; resolve via the shell.
 OBSIDIAN_VAULT := $(shell echo $(OBSIDIAN_VAULT))
 
-PLUGIN_ID := timeflow
+PLUGIN_ID := timeflow-periodic
 ARTIFACTS := main.js manifest.json styles.css
 PLUGIN_DEST := $(OBSIDIAN_VAULT)/.obsidian/plugins/$(PLUGIN_ID)
 DEMO_VAULT := $(CURDIR)/demo-vault
@@ -14,8 +14,8 @@ DEMO_PLUGIN_DEST := $(DEMO_VAULT)/.obsidian/plugins/$(PLUGIN_ID)
 
 help:
 	@echo "make local-dev   build + sync to vault + watch (set OBSIDIAN_VAULT in .env)"
-	@echo "make sync        copy artifacts → \$$OBSIDIAN_VAULT/.obsidian/plugins/timeflow"
-	@echo "make sync-demo   copy artifacts → demo-vault/.obsidian/plugins/timeflow"
+	@echo "make sync        copy artifacts → \$$OBSIDIAN_VAULT/.obsidian/plugins/timeflow-periodic"
+	@echo "make sync-demo   copy artifacts → demo-vault/.obsidian/plugins/timeflow-periodic"
 	@echo "make install     npm install"
 	@echo "make dev         watch → main.js (no copy)"
 	@echo "make build       test + production bundle"
