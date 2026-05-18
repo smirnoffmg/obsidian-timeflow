@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0
+
+- Add GitHub artifact attestations for `main.js` and `styles.css` release builds
+- Remove `!important` from plugin styles (higher-specificity selectors)
+
 ## 1.0.1
 
 - Rename community plugin id to `timeflow-periodic` (avoids conflict with existing **Timeflow** plugin)
