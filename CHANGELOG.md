@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+- Add test coverage for `domain/dates.ts` date-arithmetic utilities
+- Enforce domain boundary: migrate `moment` import out of `domain/` into adapters
+- Add husky pre-commit hook (lint + test on every commit)
+
 ## 1.1.0
 
 - Add GitHub artifact attestations for `main.js` and `styles.css` release builds
