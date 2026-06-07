@@ -7,9 +7,7 @@ export function renderSectionMarker(item: PeriodItem): HTMLElement {
 	const label = document.createElement("span");
 	label.className = "timeflow-marker__label";
 	label.textContent =
-		item.kind === "month-marker"
-			? formatMonthHeading(item.date)
-			: formatWeekHeading(item.date);
+		item.kind === "month-marker" ? formatMonthHeading(item.date) : formatWeekHeading(item.date);
 	el.appendChild(label);
 	return el;
 }

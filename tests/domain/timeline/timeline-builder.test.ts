@@ -7,22 +7,14 @@ import {
 
 describe("timeline-builder", () => {
 	it("builds consecutive days inclusive", () => {
-		const items = buildDayItems(
-			{ start: "2026-05-01", end: "2026-05-03" },
-			() => undefined,
-		);
+		const items = buildDayItems({ start: "2026-05-01", end: "2026-05-03" }, () => undefined);
 		expect(items).toHaveLength(3);
-		expect(items.map((i) => i.date)).toEqual([
-			"2026-05-01",
-			"2026-05-02",
-			"2026-05-03",
-		]);
+		expect(items.map((i) => i.date)).toEqual(["2026-05-01", "2026-05-02", "2026-05-03"]);
 	});
 
 	it("attaches note when lookup returns one", () => {
-		const items = buildDayItems(
-			{ start: "2026-05-01", end: "2026-05-01" },
-			(day) => (day === "2026-05-01" ? { path: "daily/2026-05-01.md" } : undefined),
+		const items = buildDayItems({ start: "2026-05-01", end: "2026-05-01" }, (day) =>
+			day === "2026-05-01" ? { path: "daily/2026-05-01.md" } : undefined,
 		);
 		expect(items[0]?.note?.path).toBe("daily/2026-05-01.md");
 	});
@@ -48,11 +40,10 @@ describe("timeline-builder", () => {
 	});
 
 	it("orders days newest first", () => {
-		const items = buildTimeline(
-			{ start: "2026-05-01", end: "2026-05-03" },
-			() => undefined,
-			{ ...baseStream, showMonthMarkers: false },
-		);
+		const items = buildTimeline({ start: "2026-05-01", end: "2026-05-03" }, () => undefined, {
+			...baseStream,
+			showMonthMarkers: false,
+		});
 		const days = items.filter((i) => i.kind === "day");
 		expect(days.map((d) => d.date)).toEqual(["2026-05-03", "2026-05-02", "2026-05-01"]);
 	});

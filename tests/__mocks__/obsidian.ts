@@ -4,3 +4,4 @@ export class Setting {}
 export class ItemView {}
 export class WorkspaceLeaf {}
 export class App {}
+export const moment = (..._args: unknown[]) => ({});

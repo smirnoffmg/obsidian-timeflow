@@ -13,9 +13,9 @@ Body text.`;
 	});
 
 	it("resolves wiki links and markdown links", () => {
-		expect(markdownToPlainText("See [[Note]] and [[Target|Alias]] and [web](https://x.com).")).toBe(
-			"See Note and Alias and web.",
-		);
+		expect(
+			markdownToPlainText("See [[Note]] and [[Target|Alias]] and [web](https://x.com)."),
+		).toBe("See Note and Alias and web.");
 	});
 
 	it("strips callouts and blockquotes", () => {

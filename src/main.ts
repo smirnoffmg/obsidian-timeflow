@@ -10,10 +10,7 @@ export default class TimeflowPlugin extends Plugin {
 	async onload(): Promise<void> {
 		await this.loadSettings();
 
-		this.registerView(
-			VIEW_TYPE_TIMEFLOW,
-			(leaf) => new TimeflowView(leaf, this),
-		);
+		this.registerView(VIEW_TYPE_TIMEFLOW, (leaf) => new TimeflowView(leaf, this));
 
 		registerCommands(this);
 

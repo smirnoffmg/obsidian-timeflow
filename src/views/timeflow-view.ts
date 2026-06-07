@@ -12,7 +12,10 @@ export class TimeflowView extends ItemView {
 	private presenter: FeedPresenter | null = null;
 	private renderer: DomFeedRenderer | null = null;
 
-	constructor(leaf: WorkspaceLeaf, private readonly plugin: TimeflowPlugin) {
+	constructor(
+		leaf: WorkspaceLeaf,
+		private readonly plugin: TimeflowPlugin,
+	) {
 		super(leaf);
 	}
 
@@ -34,9 +37,8 @@ export class TimeflowView extends ItemView {
 		contentEl.empty();
 		const root = contentEl.createDiv({ cls: "timeflow-root" });
 
-		const repository = new ObsidianPeriodicNoteRepository(
-			this.app,
-			(ref) => this.plugin.registerEvent(ref),
+		const repository = new ObsidianPeriodicNoteRepository(this.app, (ref) =>
+			this.plugin.registerEvent(ref),
 		);
 
 		const excerptProvider = new ObsidianExcerptProvider(this.app);

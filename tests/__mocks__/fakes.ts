@@ -1,11 +1,7 @@
 import type { DayId, NoteRef } from "../../src/domain/types";
 import type { IClock } from "../../src/ports/clock";
 import type { IPeriodicNoteRepository } from "../../src/ports/periodic-note-repository";
-import type {
-	IFeedRenderer,
-	RenderContext,
-	RenderOptions,
-} from "../../src/ports/feed-renderer";
+import type { IFeedRenderer, RenderContext, RenderOptions } from "../../src/ports/feed-renderer";
 import type { PeriodItem } from "../../src/domain/types";
 
 export class FixedClock implements IClock {

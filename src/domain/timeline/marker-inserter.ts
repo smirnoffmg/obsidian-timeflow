@@ -1,11 +1,5 @@
 import { startOfMonth, startOfWeek } from "../dates";
-import type {
-	DayId,
-	MarkerOptions,
-	MonthNoteLookup,
-	PeriodItem,
-	WeekNoteLookup,
-} from "../types";
+import type { DayId, MarkerOptions, MonthNoteLookup, PeriodItem, WeekNoteLookup } from "../types";
 
 export function weekMarkerId(weekStart: DayId): string {
 	return `week-marker-${weekStart}`;
@@ -30,10 +24,7 @@ export interface StreamInsertOptions extends MarkerOptions {
 	monthLookup: MonthNoteLookup;
 }
 
-export function insertMarkers(
-	days: PeriodItem[],
-	options: StreamInsertOptions,
-): PeriodItem[] {
+export function insertMarkers(days: PeriodItem[], options: StreamInsertOptions): PeriodItem[] {
 	const result: PeriodItem[] = [];
 	let lastWeekStart: DayId | null = null;
 	let lastMonthStart: DayId | null = null;

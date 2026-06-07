@@ -46,16 +46,12 @@ vi.mock("obsidian-daily-notes-interface", () => ({
 describe("ObsidianPeriodicNoteRepository", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		vi.stubGlobal("window", {
-			moment: () => ({ format: () => "2026-05-15" }),
-		});
 	});
 
 	it("reports not configured when daily notes disabled", async () => {
 		appHasDailyNotesPluginLoaded.mockReturnValue(false);
-		const { ObsidianPeriodicNoteRepository } = await import(
-			"../../src/adapters/obsidian-periodic-note-repository"
-		);
+		const { ObsidianPeriodicNoteRepository } =
+			await import("../../src/adapters/obsidian-periodic-note-repository");
 		const repo = new ObsidianPeriodicNoteRepository(
 			{ vault: { on: vi.fn(() => ({})) } } as never,
 			vi.fn(),
@@ -67,9 +63,8 @@ describe("ObsidianPeriodicNoteRepository", () => {
 		appHasDailyNotesPluginLoaded.mockReturnValue(true);
 		getAllDailyNotes.mockReturnValue({});
 		getDailyNote.mockReturnValue({ path: "daily/2026-05-15.md" });
-		const { ObsidianPeriodicNoteRepository } = await import(
-			"../../src/adapters/obsidian-periodic-note-repository"
-		);
+		const { ObsidianPeriodicNoteRepository } =
+			await import("../../src/adapters/obsidian-periodic-note-repository");
 		const repo = new ObsidianPeriodicNoteRepository(
 			{ vault: { on: vi.fn(() => ({})) } } as never,
 			vi.fn(),
@@ -82,9 +77,8 @@ describe("ObsidianPeriodicNoteRepository", () => {
 		appHasWeeklyNotesPluginLoaded.mockReturnValue(true);
 		getAllWeeklyNotes.mockReturnValue({});
 		getWeeklyNote.mockReturnValue({ path: "weekly/2026-W20.md" });
-		const { ObsidianPeriodicNoteRepository } = await import(
-			"../../src/adapters/obsidian-periodic-note-repository"
-		);
+		const { ObsidianPeriodicNoteRepository } =
+			await import("../../src/adapters/obsidian-periodic-note-repository");
 		const repo = new ObsidianPeriodicNoteRepository(
 			{ vault: { on: vi.fn(() => ({})) } } as never,
 			vi.fn(),
@@ -98,9 +92,8 @@ describe("ObsidianPeriodicNoteRepository", () => {
 		appHasMonthlyNotesPluginLoaded.mockReturnValue(true);
 		getAllMonthlyNotes.mockReturnValue({});
 		getMonthlyNote.mockReturnValue({ path: "monthly/2026-05.md" });
-		const { ObsidianPeriodicNoteRepository } = await import(
-			"../../src/adapters/obsidian-periodic-note-repository"
-		);
+		const { ObsidianPeriodicNoteRepository } =
+			await import("../../src/adapters/obsidian-periodic-note-repository");
 		const repo = new ObsidianPeriodicNoteRepository(
 			{ vault: { on: vi.fn(() => ({})) } } as never,
 			vi.fn(),

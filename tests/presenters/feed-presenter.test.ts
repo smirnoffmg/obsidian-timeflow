@@ -1,11 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { FeedPresenter } from "../../src/presenters/feed-presenter";
 import { DEFAULT_SETTINGS } from "../../src/timeflow-settings";
-import {
-	FakeFeedRenderer,
-	FakePeriodicNoteRepository,
-	FixedClock,
-} from "../__mocks__/fakes";
+import { FakeFeedRenderer, FakePeriodicNoteRepository, FixedClock } from "../__mocks__/fakes";
 
 describe("FeedPresenter", () => {
 	it("renders after refresh when configured", async () => {

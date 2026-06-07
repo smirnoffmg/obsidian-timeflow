@@ -18,19 +18,13 @@ describe("scroll-window-policy", () => {
 	});
 
 	it("extendWindowPast shifts start earlier", () => {
-		const next = extendWindowPast(
-			{ start: "2026-05-01", end: "2026-05-31" },
-			60,
-		);
+		const next = extendWindowPast({ start: "2026-05-01", end: "2026-05-31" }, 60);
 		expect(next.start).toBe("2026-03-02");
 		expect(next.end).toBe("2026-05-31");
 	});
 
 	it("clampWindowEnd caps at today", () => {
-		const next = clampWindowEnd(
-			{ start: "2026-05-01", end: "2026-06-30" },
-			"2026-05-15",
-		);
+		const next = clampWindowEnd({ start: "2026-05-01", end: "2026-06-30" }, "2026-05-15");
 		expect(next.end).toBe("2026-05-15");
 	});
 

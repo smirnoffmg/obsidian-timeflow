@@ -2,10 +2,7 @@ import { addDays, compareDays, eachDayInclusive } from "../dates";
 import type { DayId, NoteLookup, PeriodItem, TimelineWindow } from "../types";
 import { type StreamInsertOptions, insertMarkers } from "./marker-inserter";
 
-export function buildDayItems(
-	window: TimelineWindow,
-	lookup: NoteLookup,
-): PeriodItem[] {
+export function buildDayItems(window: TimelineWindow, lookup: NoteLookup): PeriodItem[] {
 	const days = eachDayInclusive(window.start, window.end);
 	return days.map((date): PeriodItem => {
 		const note = lookup(date);

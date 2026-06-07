@@ -1,36 +1,36 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+    release:
+        types: [published]
 
 permissions:
-  id-token: write
-  contents: write
-  attestations: write
-  artifact-metadata: write
+    id-token: write
+    contents: write
+    attestations: write
+    artifact-metadata: write
 
 jobs:
-  upload:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run bundle
-      - name: Generate artifact attestation
-        uses: actions/attest@v4
-        with:
-          subject-path: |
-            main.js
-            styles.css
-      - name: Upload release assets
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            main.js
-            manifest.json
-            styles.css
+    upload:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm ci
+            - run: npm run bundle
+            - name: Generate artifact attestation
+              uses: actions/attest@v4
+              with:
+                  subject-path: |
+                      main.js
+                      styles.css
+            - name: Upload release assets
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: |
+                      main.js
+                      manifest.json
+                      styles.css

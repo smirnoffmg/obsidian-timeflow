@@ -1,10 +1,6 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import type TimeflowPlugin from "./main";
-import {
-	clampSetting,
-	DEFAULT_SETTINGS,
-	type TimeflowSettings,
-} from "./timeflow-settings";
+import { clampSetting, DEFAULT_SETTINGS, type TimeflowSettings } from "./timeflow-settings";
 
 export type { TimeflowSettings };
 export { DEFAULT_SETTINGS, clampSetting };
@@ -59,24 +55,20 @@ export class TimeflowSettingTab extends PluginSettingTab {
 			.setName("Week markers")
 			.setDesc("Show week dividers in the timeline.")
 			.addToggle((toggle) =>
-				toggle
-					.setValue(this.plugin.settings.showWeekMarkers)
-					.onChange(async (value) => {
-						this.plugin.settings.showWeekMarkers = value;
-						await this.plugin.saveSettings();
-					}),
+				toggle.setValue(this.plugin.settings.showWeekMarkers).onChange(async (value) => {
+					this.plugin.settings.showWeekMarkers = value;
+					await this.plugin.saveSettings();
+				}),
 			);
 
 		new Setting(containerEl)
 			.setName("Month markers")
 			.setDesc("Show month dividers in the timeline.")
 			.addToggle((toggle) =>
-				toggle
-					.setValue(this.plugin.settings.showMonthMarkers)
-					.onChange(async (value) => {
-						this.plugin.settings.showMonthMarkers = value;
-						await this.plugin.saveSettings();
-					}),
+				toggle.setValue(this.plugin.settings.showMonthMarkers).onChange(async (value) => {
+					this.plugin.settings.showMonthMarkers = value;
+					await this.plugin.saveSettings();
+				}),
 			);
 
 		new Setting(containerEl)

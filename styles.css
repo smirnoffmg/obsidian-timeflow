@@ -11,28 +11,32 @@
 }
 
 /* Dataview / markdown preview must not appear in this pane (cards are plain text only) */
-.workspace-leaf-content[data-type="timeflow-periodic"] .view-content :is(
-	.markdown-reading-view,
-	.markdown-preview-view,
-	.markdown-rendered,
-	.block-language-dataview,
-	.block-language-dataviewjs,
-	.dataview-result-list-root,
-	.dataview.table-view,
-	.table-view-table,
-	.cm-html-widget
-),
-.workspace-leaf-content.timeflow-view .view-content :is(
-	.markdown-reading-view,
-	.markdown-preview-view,
-	.markdown-rendered,
-	.block-language-dataview,
-	.block-language-dataviewjs,
-	.dataview-result-list-root,
-	.dataview.table-view,
-	.table-view-table,
-	.cm-html-widget
-) {
+.workspace-leaf-content[data-type="timeflow-periodic"]
+	.view-content
+	:is(
+		.markdown-reading-view,
+		.markdown-preview-view,
+		.markdown-rendered,
+		.block-language-dataview,
+		.block-language-dataviewjs,
+		.dataview-result-list-root,
+		.dataview.table-view,
+		.table-view-table,
+		.cm-html-widget
+	),
+.workspace-leaf-content.timeflow-view
+	.view-content
+	:is(
+		.markdown-reading-view,
+		.markdown-preview-view,
+		.markdown-rendered,
+		.block-language-dataview,
+		.block-language-dataviewjs,
+		.dataview-result-list-root,
+		.dataview.table-view,
+		.table-view-table,
+		.cm-html-widget
+	) {
 	display: none;
 }
 

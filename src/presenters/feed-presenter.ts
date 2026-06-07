@@ -5,10 +5,7 @@ import {
 	clampWindowToToday,
 	initialWindow,
 } from "../domain/timeline/timeline-builder";
-import {
-	applyScrollExtension,
-	findTodayItemId,
-} from "../domain/timeline/scroll-window-policy";
+import { applyScrollExtension, findTodayItemId } from "../domain/timeline/scroll-window-policy";
 import type { IClock } from "../ports/clock";
 import type { IPeriodicNoteRepository } from "../ports/periodic-note-repository";
 import type { IFeedRenderer, RenderContext } from "../ports/feed-renderer";
@@ -93,10 +90,7 @@ export class FeedPresenter {
 			applyScrollExtension(this.window, metrics, settings.loadChunkDays, today),
 			today,
 		);
-		if (
-			nextWindow.start === this.window.start &&
-			nextWindow.end === this.window.end
-		) {
+		if (nextWindow.start === this.window.start && nextWindow.end === this.window.end) {
 			return;
 		}
 		this.window = nextWindow;

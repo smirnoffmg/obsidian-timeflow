@@ -16,8 +16,7 @@ export function shouldExtendPast(metrics: ScrollMetrics): boolean {
 
 /** Near bottom (oldest visible entries) — load more history. */
 export function shouldExtendFuture(metrics: ScrollMetrics): boolean {
-	const distanceFromBottom =
-		metrics.scrollHeight - metrics.scrollTop - metrics.clientHeight;
+	const distanceFromBottom = metrics.scrollHeight - metrics.scrollTop - metrics.clientHeight;
 	return distanceFromBottom < SCROLL_EDGE_THRESHOLD_PX;
 }
 
@@ -25,20 +24,14 @@ export function shouldExtendOlderHistory(metrics: ScrollMetrics): boolean {
 	return shouldExtendFuture(metrics);
 }
 
-export function extendWindowPast(
-	window: TimelineWindow,
-	chunkDays: number,
-): TimelineWindow {
+export function extendWindowPast(window: TimelineWindow, chunkDays: number): TimelineWindow {
 	return {
 		start: addDays(window.start, -chunkDays),
 		end: window.end,
 	};
 }
 
-export function extendWindowFuture(
-	window: TimelineWindow,
-	chunkDays: number,
-): TimelineWindow {
+export function extendWindowFuture(window: TimelineWindow, chunkDays: number): TimelineWindow {
 	return {
 		start: window.start,
 		end: addDays(window.end, chunkDays),

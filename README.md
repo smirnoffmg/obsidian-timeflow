@@ -1,80 +1,62 @@
-# Timeflow
+# Timeflow Periodic
 
-An [Obsidian](https://obsidian.md/) community plugin that turns your daily Periodic Notes into an infinite vertical **temporal feed** — time as the main way to browse your journal.
+A news-feed timeline for your Periodic Notes.
 
 ![Timeflow timeline](images/timeflow-scroll.gif)
 
-## Install
+Browse your daily journal the way you browse a feed — newest at the top, one continuous scroll, no jumping between files.
 
-1. Open **Settings -> Community plugins**.
-2. Turn on community plugins and select **Browse**.
-3. Search for **Timeflow Periodic**, install, and enable.
-
-For local development, see [dev.md](dev.md).
+Timeflow Periodic pulls your daily, weekly, and monthly notes into a single vertical view. Existing notes show a title and excerpt; missing days show a placeholder you can fill in with one click. Scroll down to reach older history; the feed extends automatically.
 
 ## Features
 
-- **Continuous timeline** — daily entries in one scrollable view (newest at the top, no future dates)
-- **Mixed stream** — daily, weekly, and monthly note cards; section markers when those periods are off
-- **Note cards** — existing notes show a title and plain-text excerpt; click to open
-- **Gap placeholders** — missing days appear as interactive cards with **Create note**
-- **Infinite scroll** — scroll down to load older days automatically
-- **Live updates** — vault changes (create, modify, rename, delete) refresh the feed
+- **Continuous scroll** — daily entries in one view, newest first, no future dates
+- **Weekly and monthly cards** — period notes appear as full cards at boundaries when enabled in Periodic Notes
+- **Period markers** — week and month dividers when period notes are off
+- **Note excerpts** — plain-text previews on each card; Dataview TABLE queries appear as row summaries
+- **Gap placeholders** — missing days show a **Create note** button
+- **Infinite scroll** — older days load automatically as you scroll
+- **Live updates** — vault changes (create, modify, rename, delete) refresh the feed instantly
+- **Jump to today** — command palette shortcut to snap back to the top
 
 ## Requirements
 
 - Obsidian **1.5.0** or newer
-- [Periodic Notes](https://github.com/liamcain/obsidian-periodic-notes) or core **Daily notes**, with folder and date format configured
-- Optional: **Weekly** and **Monthly notes** in Periodic Notes — full cards at period boundaries
-- Optional: [Dataview](https://github.com/blacksmithgu/obsidian-dataview) — TABLE queries in a note can appear as plain-text row summaries on the card (no rendered table in the feed)
+- [Periodic Notes](https://github.com/liamcain/obsidian-periodic-notes) or core **Daily notes**, with a folder and date format configured
+- Optional: **Weekly** and **Monthly** notes in Periodic Notes for full period cards
+- Optional: [Dataview](https://github.com/blacksmithgu/obsidian-dataview) for TABLE query summaries on cards
 
-## Privacy
+## Install
 
-Timeflow runs entirely offline in your vault. It does not send note contents elsewhere or collect analytics.
+1. Open **Settings → Community plugins**.
+2. Disable safe mode if needed, then select **Browse**.
+3. Search for **Timeflow Periodic**, install, and enable.
 
 ## Usage
 
-1. Enable **Timeflow Periodic** in **Settings -> Community plugins**.
+1. Enable **Timeflow Periodic** in **Settings → Community plugins**.
 2. Open the timeline:
-   - Click the **history** ribbon icon, or
-   - Command palette -> **Open timeline**
-3. **Jump to today** from the command palette when needed.
-4. Click a card to open a note, or **Create note** on a gap day.
+    - Click the **history** icon in the left ribbon, or
+    - Command palette → **Open timeline**
+3. Scroll down to travel back in time; older days load automatically.
+4. Click a card to open the note, or select **Create note** on a gap day.
 
-Configure the initial date range and markers in **Settings -> Timeflow Periodic**.
+Configure the date range, scroll behavior, and markers in **Settings → Timeflow Periodic**.
 
-## Development
+## Settings
 
-See [dev.md](dev.md) for local setup (`make local-dev`, `make sync-demo` for the [demo vault](demo-vault/SETUP.md)).
+| Setting           | Default | Range   | Description                                  |
+| ----------------- | ------- | ------- | -------------------------------------------- |
+| Days before today | 90      | 7–3650  | How many past days to load initially         |
+| Scroll chunk size | 60      | 7–180   | Days added when scrolling into older entries |
+| Week markers      | On      | —       | Show week dividers in the timeline           |
+| Month markers     | On      | —       | Show month dividers in the timeline          |
+| Excerpt length    | 200     | 50–2000 | Maximum characters for note previews         |
 
-```bash
-make install
-make local-dev
-make test
-make lint
-make build
-```
+## Privacy
 
-### Project layout
-
-```
-src/
-  domain/       # Pure timeline logic (tested without Obsidian)
-  ports/        # Interfaces (repository, renderer, clock)
-  adapters/     # Obsidian and DOM implementations
-  presenters/   # Feed orchestration
-  views/        # Timeflow ItemView
-  commands/     # Plugin commands
-tests/          # Vitest unit tests
-demo-vault/     # Seed vault for screenshots
-```
-
-Architecture follows ports/adapters with a thin `main.ts` composition root. See [AGENTS.md](AGENTS.md) for plugin conventions.
-
-## Releasing
-
-See [RELEASE.md](RELEASE.md) and [CHANGELOG.md](CHANGELOG.md).
+Timeflow Periodic runs entirely offline in your vault. It does not send note contents elsewhere or collect analytics.
 
 ## License
 
-0-BSD (see [LICENSE](LICENSE)).
+0-BSD — see [LICENSE](LICENSE).

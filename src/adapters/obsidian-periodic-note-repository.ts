@@ -1,4 +1,5 @@
 import type { App, EventRef } from "obsidian";
+import { moment } from "obsidian";
 import {
 	appHasDailyNotesPluginLoaded,
 	appHasMonthlyNotesPluginLoaded,
@@ -24,7 +25,7 @@ const DEBOUNCE_MS = 300;
 
 function dayIdToMoment(day: DayId) {
 	const date = parseDayId(day);
-	return window.moment([date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()]);
+	return moment([date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()]);
 }
 
 export class ObsidianPeriodicNoteRepository implements IPeriodicNoteRepository {

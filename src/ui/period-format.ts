@@ -67,11 +67,7 @@ export function formatPeriodHeading(item: PeriodItem): string {
 	}
 }
 
-export function isCurrentPeriod(
-	item: PeriodItem,
-	today: DayId,
-	weekStartsOn: number,
-): boolean {
+export function isCurrentPeriod(item: PeriodItem, today: DayId, weekStartsOn: number): boolean {
 	switch (item.kind) {
 		case "week":
 			return startOfWeek(today, weekStartsOn) === item.date;
